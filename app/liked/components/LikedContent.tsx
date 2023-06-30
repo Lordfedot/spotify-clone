@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { Song } from "@/types";
 import MediaItem from "@/components/MediaItem";
 import LikeButton from "@/components/LikeButton";
+import useOnPlay from "@/hooks/useOnPlay";
 
 type Props = {
   songs: Song[];
@@ -15,6 +16,8 @@ type Props = {
 const LikedContent = ({ songs }: Props) => {
   const router = useRouter();
   const { user, isLoading } = useUser();
+
+  const onPlay = useOnPlay(songs)
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -35,7 +38,7 @@ const LikedContent = ({ songs }: Props) => {
       {songs.map((song) => (
         <li className="flex items-center gap-x-4 w-full" key={song.id}>
           <div className="flex-1">
-            <MediaItem onClick={() => {}} data={song} />
+            <MediaItem onClick={(id: string) => onPlay(id)} data={song} />
           </div>
           <LikeButton songId={song.id} />
         </li>
