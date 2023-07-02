@@ -19,7 +19,6 @@ type Props = {
 };
 
 const PlayerContent = ({ song, songUrl }: Props) => {
-  console.log(songUrl);
 
   const [volume, setVolume] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -39,8 +38,6 @@ const PlayerContent = ({ song, songUrl }: Props) => {
   const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
 
   useEffect(() => {
-    console.log(sound?.play());
-
     sound?.play();
     return () => {
       sound?.unload();
