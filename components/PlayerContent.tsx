@@ -13,6 +13,7 @@ import MediaItem from "./MediaItem";
 import LikeButton from "./LikeButton";
 import Slider from "./Slider";
 
+
 type Props = {
   song: Song;
   songUrl: string;
@@ -41,7 +42,7 @@ const PlayerContent = ({ song, songUrl }: Props) => {
       sound?.unload();
     };
   }, [sound]);
-
+  
   const handlePlay = useCallback(() => {
     if (!isPlaying) {
       play();

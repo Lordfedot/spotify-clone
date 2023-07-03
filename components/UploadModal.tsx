@@ -13,6 +13,7 @@ import Modal from "./Modal";
 import Input from "./Input";
 import Button from "./Button";
 import { useRouter } from "next/navigation";
+import useMP3Duration from "@/hooks/useMP3Duration";
 
 const UploadModal = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,7 +21,8 @@ const UploadModal = () => {
   const { user } = useUser();
   const supabaseClient = useSupabaseClient();
   const router = useRouter()
-
+  const [duration, setFileToGetDuration] = useMP3Duration();
+  
   const { register, handleSubmit, reset } = useForm<FieldValues>({
     defaultValues: {
       author: "",
@@ -43,6 +45,7 @@ const UploadModal = () => {
 
       const imageFile = values.image?.[0];
       const songFile = values.song?.[0];
+      setFileToGetDuration(songFile)
 
       if (!imageFile || !songFile || !user) {
         toast.error("Missisn fields");
@@ -82,6 +85,7 @@ const UploadModal = () => {
           author: values.author,
           image_path: imageData.path,
           song_path: songData.path,
+          duration: duration
         });
       if (supabaseError) {
         setIsLoading(false);
