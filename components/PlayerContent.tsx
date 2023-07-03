@@ -3,7 +3,7 @@
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
 import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useSound from "use-sound";
 
 import usePlayer from "@/hooks/usePlayer";
@@ -19,10 +19,8 @@ type Props = {
 };
 
 const PlayerContent = ({ song, songUrl }: Props) => {
-
   const [volume, setVolume] = useState(1);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const player = usePlayer();
+  const { isPlaying, setIsPlaying, ids, setId, activeId } = usePlayer();
   const [play, { pause, sound }] = useSound(songUrl, {
     volume: volume,
     onplay: () => setIsPlaying(true),
@@ -44,13 +42,13 @@ const PlayerContent = ({ song, songUrl }: Props) => {
     };
   }, [sound]);
 
-  const handlePlay = () => {
+  const handlePlay = useCallback(() => {
     if (!isPlaying) {
       play();
     } else {
       pause();
     }
-  };
+  }, [isPlaying, play, pause]);
 
   const toggleMute = () => {
     if (volume === 0) {
@@ -61,28 +59,28 @@ const PlayerContent = ({ song, songUrl }: Props) => {
   };
 
   const onPlayNext = () => {
-    if (player.ids.length === 0) {
+    if (ids.length === 0) {
       return;
     }
-    const currentIndex = player.ids.findIndex((id) => id === player.activeId);
-    const nextSong = player.ids[currentIndex + 1];
+    const currentIndex = ids.findIndex((id) => id === activeId);
+    const nextSong = ids[currentIndex + 1];
 
     if (!nextSong) {
-      return player.setId(player.ids[0]);
+      return setId(ids[0]);
     }
-    player.setId(nextSong);
+    setId(nextSong);
   };
   const onPlayPrevious = () => {
-    if (player.ids.length === 0) {
+    if (ids.length === 0) {
       return;
     }
-    const currentIndex = player.ids.findIndex((id) => id === player.activeId);
-    const previousSong = player.ids[currentIndex - 1];
+    const currentIndex = ids.findIndex((id) => id === activeId);
+    const previousSong = ids[currentIndex - 1];
 
     if (!previousSong) {
-      return player.setId(player.ids[player.ids.length - 1]);
+      return setId(ids[ids.length - 1]);
     }
-    player.setId(previousSong);
+    setId(previousSong);
   };
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">

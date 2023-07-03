@@ -32,7 +32,9 @@ const SongItem = ({ data, onClick }: Props) => {
           By {data.author}
         </p>
       </div>
-      <div className="absolute bottom-31 right-5"><PlayButton/></div>
+      <div className="absolute bottom-31 right-5">
+        <PlayButton songId={data.id} />
+      </div>
     </li>
   );
 };

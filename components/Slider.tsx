@@ -22,7 +22,7 @@ const Slider = ({ value = 1, onChange }: Props) => {
       className="relative flex items-center select-none touch-none w-full h-10"
     >
       <RadixSlider.Track className="bg-neutral relative grow rounded-full h-[3px]">
-        <RadixSlider.Range className="absolute bg-white rounded-full h-full "/>
+        <RadixSlider.Range className="cursor-pointer absolute bg-white rounded-full h-full "/>
       </RadixSlider.Track>
     </RadixSlider.Root>
   );
