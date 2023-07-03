@@ -20,6 +20,7 @@ const SongItem = ({ data, onClick }: Props) => {
     >
       <div className="relative aspect-square w-full h-full rounded-md overflow-hidden">
         <Image
+          sizes="100%"
           fill
           alt={data.title}
           src={imagePath || "/public/images/liked.png"}

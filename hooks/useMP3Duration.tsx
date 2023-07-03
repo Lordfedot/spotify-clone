@@ -1,17 +1,13 @@
 import { useState, useEffect } from "react";
 
+import { convertTime } from "@/helpers/convertTime";
+
 const useMP3Duration = (): [string | null, (file: File) => void] => {
   const [duration, setDuration] = useState<string | null>(null);
   const [fileToDecode, setFileToDecode] = useState<File | null>(null);
 
   const setFileToGetDuration = (file: File) => {
     setFileToDecode(file);
-  };
-
-  const convertToTime = (number: number) => {
-    const hours = Math.floor(number / 60);
-    const minutes = number % 60;
-    return `${hours}:${minutes.toString().padStart(2, "0")}`;
   };
 
   useEffect(() => {
@@ -26,8 +22,8 @@ const useMP3Duration = (): [string | null, (file: File) => void] => {
       audioContext.decodeAudioData(
         arrayBuffer,
         (buffer) => {
-          const fileDuration = Math.round(buffer.duration);
-          const time = convertToTime(fileDuration);
+          const fileDuration =buffer.duration;
+          const time = convertTime(fileDuration);
           setDuration(time);
         },
         (error) => {

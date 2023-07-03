@@ -8,11 +8,11 @@ import useSound from "use-sound";
 
 import usePlayer from "@/hooks/usePlayer";
 import { Song } from "@/types";
+import { convertTimeToNumber } from "@/helpers/convertTime";
 
 import MediaItem from "./MediaItem";
 import LikeButton from "./LikeButton";
 import Slider from "./Slider";
-
 
 type Props = {
   song: Song;
@@ -22,6 +22,8 @@ type Props = {
 const PlayerContent = ({ song, songUrl }: Props) => {
   const [volume, setVolume] = useState(1);
   const { isPlaying, setIsPlaying, ids, setId, activeId } = usePlayer();
+  const [currentTime, setCurrentTime] = useState<number>(0);
+
   const [play, { pause, sound }] = useSound(songUrl, {
     volume: volume,
     onplay: () => setIsPlaying(true),
@@ -33,16 +35,20 @@ const PlayerContent = ({ song, songUrl }: Props) => {
     format: ["mp3"],
   });
 
-  const Icon = isPlaying ? BsPauseFill : BsPlayFill;
-  const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
-
   useEffect(() => {
-    sound?.play();
-    return () => {
-      sound?.unload();
-    };
+    if (sound) {
+      sound.play();
+      const interval = setInterval(() => {
+        const seekedTime = sound?.seek();
+        setCurrentTime(seekedTime);
+      }, 1000);
+      return () => {
+        clearInterval(interval);
+        sound?.unload();
+      };
+    }
   }, [sound]);
-  
+
   const handlePlay = useCallback(() => {
     if (!isPlaying) {
       play();
@@ -83,11 +89,25 @@ const PlayerContent = ({ song, songUrl }: Props) => {
     }
     setId(previousSong);
   };
+  const max = convertTimeToNumber(song.duration);
+  const Icon = isPlaying ? BsPauseFill : BsPlayFill;
+  const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
+      <input
+        max={max}
+        onChange={(e) => {
+          setCurrentTime(Number(e.target.value));
+          sound.seek(e.target.value);
+        }}
+        type="range"
+        className="absolute top-0 left-0 w-full h-1 color-red-800"
+        value={currentTime}
+      ></input>
+
       <div className="flex w-full justify-start">
-        <div className="flex items-center gap-x-4">
-          <MediaItem data={song} />
+        <div className="flex w-full items-center gap-x-4">
+          <MediaItem currentTime={currentTime} data={song} />
           <LikeButton songId={song.id} />
         </div>
       </div>
