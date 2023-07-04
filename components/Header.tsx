@@ -14,10 +14,9 @@ import useAuthModal from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
 
 type Props = {
-  children: ReactNode;
   className?: string;
 };
-const Header = ({ children, className }: Props) => {
+const Header = ({ className }: Props) => {
   const router = useRouter();
   const { onOpen } = useAuthModal();
 
@@ -26,7 +25,6 @@ const Header = ({ children, className }: Props) => {
 
   const handleLogout = async () => {
     const { error } = await supabaseClient.auth.signOut();
-    //Reset any playing songs
 
     router.refresh();
 
@@ -44,7 +42,7 @@ const Header = ({ children, className }: Props) => {
         className
       )}
     >
-      <div className="w-full mb-4 flex items-center justify-between ">
+      <div className="w-full flex items-center justify-between ">
         <div className="hidden md:flex gap-x-2 items-center">
           <button
             onClick={() => router.back()}
@@ -99,7 +97,6 @@ const Header = ({ children, className }: Props) => {
           )}
         </div>
       </div>
-      {children}
     </div>
   );
 };

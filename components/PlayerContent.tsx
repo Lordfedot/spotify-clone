@@ -3,7 +3,7 @@
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
 import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useSound from "use-sound";
 
 import usePlayer from "@/hooks/usePlayer";
@@ -63,9 +63,9 @@ const PlayerContent = ({ song, songUrl }: Props) => {
     localStorage.setItem("volume", volume.toString());
   }, [volume]);
 
-  const handleOnChangeBar = (e: ChangeEvent<HTMLInputElement>) => {
-    setCurrentTime(Number(e.target.value));
-    sound?.seek(e.target.value);
+  const handleOnChangeBar = (newValue: number[]) => {
+    setCurrentTime(Number(newValue));
+    sound?.seek(newValue);
   };
   const handlePlay = useCallback(() => {
     if (!isPlaying) {
@@ -113,13 +113,13 @@ const PlayerContent = ({ song, songUrl }: Props) => {
   const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
-      <input
+      <Slider
         max={maxDuration}
-        onChange={handleOnChangeBar}
-        type="range"
-        className="appearance-none absolute left-0 top-0 cursor-pointer w-full h-1 bg-[#22c55e] rounded-lg outline-none"
         value={currentTime}
-      ></input>
+        className="absolute left-0 top-[-12px]"
+        onChange={handleOnChangeBar}
+      />
+     
 
       <div className="flex w-full justify-start">
         <div className="flex w-full items-center gap-x-4">

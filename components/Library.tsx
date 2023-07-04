@@ -18,7 +18,7 @@ const Library = ({ songs }: Props) => {
   const authModal = useAuthModal();
   const uploadModal = useUploadModal();
   const { user } = useUser();
-  const onPlay = useOnPlay(songs)
+  const onPlay = useOnPlay(songs);
 
   const onClick = () => {
     if (!user) {
@@ -31,7 +31,7 @@ const Library = ({ songs }: Props) => {
       <div className="flex items-center justify-between px-5 pt-4">
         <div className="inline-flex items-center gap-x-2">
           <TbPlaylist size={26} className="text-neutral-400" />
-          <p className=" text-neutral-500 font-medium text-md">Your library</p>
+          <p className=" text-neutral-500 font-medium">Your library</p>
         </div>
         <AiOutlinePlus
           onClick={onClick}
@@ -39,11 +39,20 @@ const Library = ({ songs }: Props) => {
           className="text-neutral-400 cursor-pointer hover:text-white transition"
         />
       </div>
+      {!user && (
+        <p className="text-neutral-300 font-medium self-center mt-4 px-2">
+          To get access to your music or to add new song, please, authorized ☺!
+        </p>
+      )}
       <ul className="flex flex-col gap-y-2 mt-4 px-3">
         {songs.map((song) => (
-          <MediaItem onClick={(id: string)=> onPlay(id)} data={song} key={song.id} />
+          <MediaItem
+            onClick={(id: string) => onPlay(id)}
+            data={song}
+            key={song.id}
+          />
         ))}
-    </ul>
+      </ul>
     </div>
   );
 };
