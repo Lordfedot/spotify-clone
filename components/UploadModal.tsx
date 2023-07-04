@@ -3,7 +3,7 @@
 import uniqid from "uniqid";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
 
 import useUploadModal from "@/hooks/useUploadModal";
@@ -20,10 +20,10 @@ const UploadModal = () => {
   const { isOpen, onClose } = useUploadModal();
   const { user } = useUser();
   const supabaseClient = useSupabaseClient();
-  const router = useRouter()
-  const [duration, setFileToGetDuration] = useMP3Duration();
-  
-  const { register, handleSubmit, reset } = useForm<FieldValues>({
+  const router = useRouter();
+  const [duration, setFileToDecode] = useMP3Duration();
+
+  const { register, handleSubmit, reset, setValue } = useForm<FieldValues>({
     defaultValues: {
       author: "",
       title: "",
@@ -31,7 +31,13 @@ const UploadModal = () => {
       image: null,
     },
   });
-
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFileToDecode(file);
+      setValue("song", file);
+    }
+  };
   const onChange = (open: boolean) => {
     if (!open) {
       reset();
@@ -44,11 +50,11 @@ const UploadModal = () => {
       setIsLoading(true);
 
       const imageFile = values.image?.[0];
-      const songFile = values.song?.[0];
-      setFileToGetDuration(songFile)
+      const songFile = values.song
+      
 
       if (!imageFile || !songFile || !user) {
-        toast.error("Missisn fields");
+        toast.error("Missing fields");
         return;
       }
 
@@ -85,19 +91,18 @@ const UploadModal = () => {
           author: values.author,
           image_path: imageData.path,
           song_path: songData.path,
-          duration: duration
+          duration: duration,
         });
       if (supabaseError) {
         setIsLoading(false);
         return toast.error(supabaseError.message);
       }
 
-      router.refresh()
-      setIsLoading(false)
-      toast.success("Song created! :)")
-      reset()
-      onClose()
-      
+      router.refresh();
+      setIsLoading(false);
+      toast.success("Song created! :)");
+      reset();
+      onClose();
     } catch (error) {
       toast.error("Something went wrong!!");
     }
@@ -125,11 +130,12 @@ const UploadModal = () => {
         <label>
           Select a song file
           <Input
+            onChange={handleFileChange}
             accept=".mp3"
             id="song"
+            name="song"
             type="file"
             disabled={isLoading}
-            {...register("song", { required: true })}
           />
         </label>
         <label>

@@ -98,10 +98,10 @@ const PlayerContent = ({ song, songUrl }: Props) => {
         max={max}
         onChange={(e) => {
           setCurrentTime(Number(e.target.value));
-          sound.seek(e.target.value);
+          sound?.seek(e.target.value);
         }}
         type="range"
-        className="absolute top-0 left-0 w-full h-1 color-red-800"
+        className="cursor-pointer absolute top-0 left-0 w-full h-1 color-red-800"
         value={currentTime}
       ></input>
 
@@ -125,7 +125,7 @@ const PlayerContent = ({ song, songUrl }: Props) => {
         <AiFillStepBackward
           onClick={onPlayPrevious}
           size={30}
-          className="text-neutal-400 cursor-poiner hover:text-white transition"
+          className="cursor-pointer text-neutal-400 cursor-poiner hover:text-white transition"
         />
         <div
           onClick={handlePlay}
@@ -136,7 +136,7 @@ const PlayerContent = ({ song, songUrl }: Props) => {
         <AiFillStepForward
           size={30}
           onClick={onPlayNext}
-          className="text-neutal-400 cursor-poiner hover:text-white transition"
+          className="cursor-pointer text-neutal-400 cursor-poiner hover:text-white transition"
         />
       </div>
 

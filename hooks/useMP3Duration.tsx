@@ -16,12 +16,12 @@ const useMP3Duration = (): [string | null, (file: File) => void] => {
     const audioContext = new AudioContext();
     const fileReader = new FileReader();
 
-    fileReader.onload = () => {
+    fileReader.onload = async () => {
       const arrayBuffer = fileReader.result as ArrayBuffer;
 
-      audioContext.decodeAudioData(
+      await audioContext.decodeAudioData(
         arrayBuffer,
-        (buffer) => {
+        (buffer) => {          
           const fileDuration =buffer.duration;
           const time = convertTime(fileDuration);
           setDuration(time);
