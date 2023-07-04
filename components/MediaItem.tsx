@@ -42,11 +42,11 @@ const MediaItem = ({ data, onClick, currentTime }: Props) => {
       </div>
       <div className="justify-self-end">
         {currentTime ? (
-          <p className="text-neutral-400 text-sm truncate ">
+          <p className="text-neutral-400 text-sm truncate hidden md:block">
             {convertedTime} - {data.duration}
           </p>
         ) : (
-          <p className="text-neutral-400 text-sm truncate ">{data.duration}</p>
+          <p className="text-neutral-400 text-sm truncate hidden md:block">{data.duration}</p>
         )}
       </div>
     </div>

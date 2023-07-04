@@ -7,13 +7,20 @@ type Props = {
 };
 
 const PlayButton = ({ songId }: Props) => {
-  const { isPlaying, activeId, setIsPlaying } = usePlayer();
+  const { isPlaying, activeId, setIsPlaying, play, pause } = usePlayer();
   const activeSong = songId === activeId;
 
   const Icon = isPlaying && activeSong ? FaPause : FaPlay;
 
   const handlePlay = () => {
-    setIsPlaying(!isPlaying);
+    if (play && pause) {
+      setIsPlaying(!isPlaying);
+      if (!isPlaying) {
+        play();
+      } else {
+        pause();
+      }
+    }
   };
   return (
     <button

@@ -17,13 +17,14 @@ const Slider = ({ value = 1, onChange }: Props) => {
       value={[value]}
       onValueChange={handleChange}
       max={1}
-      step={0.1}
+      step={0.01}
       aria-label="Volume"
-      className="relative flex items-center select-none touch-none w-full h-10"
+      className="cursor-pointer relative flex items-center select-none touch-none w-full h-10"
     >
-      <RadixSlider.Track className="bg-neutral relative grow rounded-full h-[3px]">
-        <RadixSlider.Range className="cursor-pointer absolute bg-white rounded-full h-full "/>
+      <RadixSlider.Track className="bg-neutral-700 relative grow rounded-full h-[3px]">
+        <RadixSlider.Range className=" absolute bg-green-500 rounded-full h-full " />
       </RadixSlider.Track>
+      <RadixSlider.Thumb className="block borded-none rounded-full  bg-green-600 w-[12px] h-[12px]" />
     </RadixSlider.Root>
   );
 };

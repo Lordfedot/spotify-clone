@@ -3,7 +3,7 @@
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
 import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";
-import { useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import useSound from "use-sound";
 
 import usePlayer from "@/hooks/usePlayer";
@@ -20,8 +20,11 @@ type Props = {
 };
 
 const PlayerContent = ({ song, songUrl }: Props) => {
-  const [volume, setVolume] = useState(1);
-  const { isPlaying, setIsPlaying, ids, setId, activeId } = usePlayer();
+  const [volume, setVolume] = useState(
+    parseFloat(localStorage.getItem("volume")!) || 1
+  );
+  const { isPlaying, setIsPlaying, ids, setId, activeId, setPlay, setPause } =
+    usePlayer();
   const [currentTime, setCurrentTime] = useState<number>(0);
 
   const [play, { pause, sound }] = useSound(songUrl, {
@@ -36,12 +39,19 @@ const PlayerContent = ({ song, songUrl }: Props) => {
   });
 
   useEffect(() => {
+    setPause(pause);
+    setPlay(play);
+  }, [setPause, setPlay, pause, play]);
+
+  useEffect(() => {
     if (sound) {
       sound.play();
+
       const interval = setInterval(() => {
         const seekedTime = sound?.seek();
         setCurrentTime(seekedTime);
       }, 1000);
+
       return () => {
         clearInterval(interval);
         sound?.unload();
@@ -49,6 +59,14 @@ const PlayerContent = ({ song, songUrl }: Props) => {
     }
   }, [sound]);
 
+  useEffect(() => {
+    localStorage.setItem("volume", volume.toString());
+  }, [volume]);
+
+  const handleOnChangeBar = (e: ChangeEvent<HTMLInputElement>) => {
+    setCurrentTime(Number(e.target.value));
+    sound?.seek(e.target.value);
+  };
   const handlePlay = useCallback(() => {
     if (!isPlaying) {
       play();
@@ -89,19 +107,17 @@ const PlayerContent = ({ song, songUrl }: Props) => {
     }
     setId(previousSong);
   };
-  const max = convertTimeToNumber(song.duration);
+
+  const maxDuration = convertTimeToNumber(song.duration);
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
   const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
       <input
-        max={max}
-        onChange={(e) => {
-          setCurrentTime(Number(e.target.value));
-          sound?.seek(e.target.value);
-        }}
+        max={maxDuration}
+        onChange={handleOnChangeBar}
         type="range"
-        className="cursor-pointer absolute top-0 left-0 w-full h-1 color-red-800"
+        className="appearance-none absolute left-0 top-0 cursor-pointer w-full h-1 bg-[#22c55e] rounded-lg outline-none"
         value={currentTime}
       ></input>
 
@@ -148,7 +164,7 @@ const PlayerContent = ({ song, songUrl }: Props) => {
             className="cursor-pointer "
           />
         </div>
-        <Slider value={volume} onChange={(value) => setVolume(value)} />
+        <Slider value={volume} onChange={(value: number) => setVolume(value)} />
       </div>
     </div>
   );
