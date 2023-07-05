@@ -11,9 +11,8 @@ type Props = {
 };
 
 const Slider = ({ value = 1, onChange, className, max = 1 }: Props) => {
+  
   const handleChange = (newValue: any) => {
-    console.log(newValue);
-
     onChange?.(newValue[0]);
   };
   return (

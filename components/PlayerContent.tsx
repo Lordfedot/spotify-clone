@@ -13,6 +13,7 @@ import { convertTimeToNumber } from "@/helpers/convertTime";
 import MediaItem from "./MediaItem";
 import LikeButton from "./LikeButton";
 import Slider from "./Slider";
+import { useUser } from "@/hooks/useUser";
 
 type Props = {
   song: Song;
@@ -23,9 +24,11 @@ const PlayerContent = ({ song, songUrl }: Props) => {
   const [volume, setVolume] = useState(
     parseFloat(localStorage.getItem("volume")!) || 1
   );
+  const [currentTime, setCurrentTime] = useState<number>(0);
+  
   const { isPlaying, setIsPlaying, ids, setId, activeId, setPlay, setPause } =
     usePlayer();
-  const [currentTime, setCurrentTime] = useState<number>(0);
+  const { user } = useUser();
 
   const [play, { pause, sound }] = useSound(songUrl, {
     volume: volume,
@@ -119,12 +122,11 @@ const PlayerContent = ({ song, songUrl }: Props) => {
         className="absolute left-0 top-[-12px]"
         onChange={handleOnChangeBar}
       />
-     
 
       <div className="flex w-full justify-start">
         <div className="flex w-full items-center gap-x-4">
           <MediaItem currentTime={currentTime} data={song} />
-          <LikeButton songId={song.id} />
+          {user && <LikeButton songId={song.id} />}
         </div>
       </div>
 
