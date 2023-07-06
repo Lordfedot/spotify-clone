@@ -7,6 +7,7 @@ import useAuthModal from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
 import useUploadModal from "@/hooks/useUploadModal";
 import useOnPlay from "@/hooks/useOnPlay";
+import useSubscribeModal from "@/hooks/useSubscribeModal";
 
 import MediaItem from "./MediaItem";
 
@@ -15,15 +16,21 @@ type Props = {
 };
 
 const Library = ({ songs }: Props) => {
+  const subscribeModal = useSubscribeModal();
   const authModal = useAuthModal();
   const uploadModal = useUploadModal();
-  const { user } = useUser();
+  const { user, subscription } = useUser();
   const onPlay = useOnPlay(songs);
 
   const onClick = () => {
     if (!user) {
       return authModal.onOpen();
     }
+
+    if (!subscription) {
+      return subscribeModal.onOpen();
+    }
+
     return uploadModal.onOpen();
   };
   return (
@@ -44,15 +51,17 @@ const Library = ({ songs }: Props) => {
           To get access to your music or to add new song, please, authorized ☺!
         </p>
       )}
-      <ul className="flex flex-col gap-y-2 mt-4 px-3">
-        {songs.map((song) => (
-          <MediaItem
-            onClick={(id: string) => onPlay(id)}
-            data={song}
-            key={song.id}
-          />
-        ))}
-      </ul>
+      {user && (
+        <ul className="flex flex-col gap-y-2 mt-4 px-3">
+          {songs.map((song) => (
+            <MediaItem
+              onClick={(id: string) => onPlay(id)}
+              data={song}
+              key={song.id}
+            />
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

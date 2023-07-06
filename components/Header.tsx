@@ -1,6 +1,5 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
@@ -12,12 +11,14 @@ import { toast } from "react-hot-toast";
 import Button from "./Button";
 import useAuthModal from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
+import usePlayer from "@/hooks/usePlayer";
 
 type Props = {
   className?: string;
 };
 const Header = ({ className }: Props) => {
   const router = useRouter();
+  const player = usePlayer();
   const { onOpen } = useAuthModal();
 
   const supabaseClient = useSupabaseClient();
@@ -26,6 +27,7 @@ const Header = ({ className }: Props) => {
   const handleLogout = async () => {
     const { error } = await supabaseClient.auth.signOut();
 
+    player.reset();
     router.refresh();
 
     if (error) {

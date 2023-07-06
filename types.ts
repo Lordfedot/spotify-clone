@@ -1,14 +1,13 @@
-import { metadata } from './app/layout';
 import Stripe from "stripe";
 
 export interface Song {
-  id: string
-  user_id: string
-  author: string
-  title: string
-  song_path: string
-  image_path: string
-  duration: string
+  id: string;
+  user_id: string;
+  author: string;
+  title: string;
+  song_path: string;
+  image_path: string;
+  duration: string;
 }
 
 export interface UserDetails {
@@ -20,6 +19,7 @@ export interface UserDetails {
   billing_address?: Stripe.Address;
   payment_method?: Stripe.PaymentMethod[Stripe.PaymentMethod.Type];
 }
+
 export interface Product {
   id: string;
   active?: boolean;
@@ -28,6 +28,7 @@ export interface Product {
   image?: string;
   metadata?: Stripe.Metadata;
 }
+
 export interface Price {
   id: string;
   product_id?: string;
@@ -42,6 +43,11 @@ export interface Price {
   metadata?: Stripe.Metadata;
   products?: Product;
 }
+
+export interface ProductWithPrice extends Product {
+  prices?: Price[];
+}
+
 export interface Subscription {
   id: string;
   user_id: string;
@@ -49,7 +55,7 @@ export interface Subscription {
   metadata?: Stripe.Metadata;
   price_id?: string;
   quantity?: number;
-  cancel_at_period_end?: string;
+  cancel_at_period_end?: boolean;
   created: string;
   current_period_start: string;
   current_period_end: string;
