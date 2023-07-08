@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { twMerge } from "tailwind-merge";
 
 import useGetSongById from "@/hooks/useGetSongsById";
 import useLoadSongUrl from "@/hooks/useLoadSong";
@@ -23,7 +24,12 @@ const Player = () => {
   }
   return (
     <>
-      <div className="fixed bottom-0 bg-neutral-900 w-full py-2 h-[80px] px-4 z-50">
+      <div
+        className={twMerge(
+          `fixed bottom-0  w-full py-2 h-[80px] px-4 z-50`,
+          activeDropdown ? "bg-neutral-900" : "bg-black"
+        )}
+      >
         <PlayerContent
           activeDropdown={activeDropdown}
           toggleDropdown={toggleDropdown}
