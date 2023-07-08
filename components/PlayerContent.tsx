@@ -3,8 +3,16 @@
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
 import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";
-import { useCallback, useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+import { IoIosArrowUp } from "react-icons/io";
 import useSound from "use-sound";
+import { twMerge } from "tailwind-merge";
 
 import usePlayer from "@/hooks/usePlayer";
 import { Song } from "@/types";
@@ -17,9 +25,16 @@ import Slider from "./Slider";
 type Props = {
   song: Song;
   songUrl: string;
+  toggleDropdown: Dispatch<SetStateAction<boolean>>;
+  activeDropdown: boolean;
 };
 
-const PlayerContent = ({ song, songUrl }: Props) => {
+const PlayerContent = ({
+  song,
+  songUrl,
+  toggleDropdown,
+  activeDropdown,
+}: Props) => {
   const [volume, setVolume] = useState(
     parseFloat(localStorage.getItem("volume")!) || 1
   );
@@ -113,7 +128,7 @@ const PlayerContent = ({ song, songUrl }: Props) => {
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
   const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 h-full">
+    <div className="grid grid-cols-[1fr_4fr] md:grid-cols-[1fr_3fr_1fr] gap-4 h-full">
       <Slider
         max={maxDuration}
         value={currentTime}
@@ -121,14 +136,7 @@ const PlayerContent = ({ song, songUrl }: Props) => {
         onChange={handleOnChangeBar}
       />
 
-      <div className="flex w-full justify-start">
-        <div className="flex w-full items-center gap-x-4">
-          <MediaItem currentTime={currentTime} data={song} />
-          <LikeButton songId={song.id} />
-        </div>
-      </div>
-
-      <div className="flex md:hidden col-auto w-full justify-end items-center">
+      <div className="flex md:hidden col-auto w-full justify-center items-center">
         <div
           onClick={handlePlay}
           className="h-10 w-10 flex items-center justify-center rounded-full bg-white cursor-pointer p-1"
@@ -137,7 +145,7 @@ const PlayerContent = ({ song, songUrl }: Props) => {
         </div>
       </div>
 
-      <div className="hidden h-full md:flex justify-center items-center w-full max-w-[772px] gap-x-6">
+      <div className="hidden h-full md:flex justify-center items-center w-full gap-x-6">
         <AiFillStepBackward
           onClick={onPlayPrevious}
           size={30}
@@ -156,7 +164,24 @@ const PlayerContent = ({ song, songUrl }: Props) => {
         />
       </div>
 
-      <div className="hidden items-center md:flex w-full justify-end pr-2">
+      <div className="flex w-full justify-start items-center gap-2 overflow-hidden">
+        <MediaItem
+          onClick={toggleDropdown}
+          currentTime={currentTime}
+          data={song}
+        >
+          <IoIosArrowUp
+            size={20}
+            className={twMerge(
+              `transition duration-400`,
+              activeDropdown && "-rotate-180"
+            )}
+          />
+        </MediaItem>
+        <LikeButton songId={song.id} />
+      </div>
+
+      <div className="hidden items-center md:flex w-full justify-end">
         <div className="flex items-center gap-x-2 w-[120px]">
           <VolumeIcon
             size={34}

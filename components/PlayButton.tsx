@@ -11,7 +11,7 @@ const PlayButton = ({ songId }: Props) => {
   const activeSong = songId === activeId;
 
   const Icon = isPlaying && activeSong ? FaPause : FaPlay;
-
+  
   const handlePlay = () => {
     if (play && pause) {
       setIsPlaying(!isPlaying);
@@ -30,7 +30,7 @@ const PlayButton = ({ songId }: Props) => {
         activeSong && "opacity-100"
       )}
     >
-      <Icon className="text-black" />
+      <Icon size={16} className="text-black" />
     </button>
   );
 };

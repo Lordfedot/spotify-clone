@@ -19,13 +19,14 @@ const SearchContent = ({ songs }: Props) => {
     );
   }
   return (
-    <ul className=" mt-3 flex flex-col gap-y-2 w-full px-6">
+    <ul className=" mt-3 flex flex-col gap-y-2 w-full px-1 md:px-6">
       {songs.map((song) => (
         <li className="flex items-center gap-x-4 w-full" key={song.id}>
-          <div className="flex-1">
+          <div className="flex-1 overflow-hidden">
             <MediaItem
               data={song}
               onClick={(id: string) => onPlay(id)}
+              className={"bg-neutral-800/50 border-b-[1px] border-green-500"}
             ></MediaItem>
           </div>
           <LikeButton songId={song.id} />

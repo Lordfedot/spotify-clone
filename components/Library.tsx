@@ -58,6 +58,7 @@ const Library = ({ songs }: Props) => {
               onClick={(id: string) => onPlay(id)}
               data={song}
               key={song.id}
+              className={"bg-neutral-800/50 border-b-[1px] border-green-500"}
             />
           ))}
         </ul>
