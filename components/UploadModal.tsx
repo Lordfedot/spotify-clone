@@ -5,15 +5,15 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 import useUploadModal from "@/hooks/useUploadModal";
 import { useUser } from "@/hooks/useUser";
+import useMP3Duration from "@/hooks/useMP3Duration";
 
 import Modal from "./Modal";
 import Input from "./Input";
 import Button from "./Button";
-import { useRouter } from "next/navigation";
-import useMP3Duration from "@/hooks/useMP3Duration";
 
 const UploadModal = () => {
   const [isLoading, setIsLoading] = useState(false);

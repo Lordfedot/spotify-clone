@@ -7,7 +7,7 @@ import UploadModal from "@/components/UploadModal";
 import SubscribeModal from "@/components/SubscribeModal";
 import PlaylistsModal from "@/components/PlaylistsModal";
 import { ProductWithPrice } from "@/types";
-
+import AddPlaylistModal from "@/components/AddPlaylistModal";
 
 type Props = {
   products: ProductWithPrice[];
@@ -24,6 +24,7 @@ const ModalProvider = ({ products }: Props) => {
   }
   return (
     <>
+      <AddPlaylistModal />
       <SubscribeModal products={products} />
       <AuthModal />
       <UploadModal />
