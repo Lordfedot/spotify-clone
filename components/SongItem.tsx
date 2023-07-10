@@ -5,6 +5,7 @@ import useLoadImage from "@/hooks/useLoadImage";
 import { Song } from "@/types";
 
 import PlayButton from "./PlayButton";
+import OptionsButton from "./OptionsButton";
 
 type Props = {
   data: Song;
@@ -16,9 +17,9 @@ const SongItem = ({ data, onClick }: Props) => {
   return (
     <li
       onClick={() => onClick(data.id)}
-      className="flex relative group flex-col items-center justify-center rounded-md overflow-hidden gap-x-4 bg-neutral-400/5 cursor-pointer hover:bg-neutral-400/10 transition p-3"
+      className="flex relative group flex-col items-center justify-center rounded-md gap-x-4 bg-neutral-400/5 cursor-pointer hover:bg-neutral-400/10 transition p-3"
     >
-      <div className="relative aspect-square w-full h-full rounded-md overflow-hidden">
+      <div className="relative aspect-square w-full h-full rounded-md">
         <Image
           sizes="100%"
           fill
@@ -35,6 +36,9 @@ const SongItem = ({ data, onClick }: Props) => {
       </div>
       <div className="absolute bottom-31 right-5">
         <PlayButton songId={data.id} />
+      </div>
+      <div className="absolute top-5 right-5">
+        <OptionsButton />
       </div>
     </li>
   );
