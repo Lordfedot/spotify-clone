@@ -12,6 +12,7 @@ import Button from "./Button";
 import useAuthModal from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
 import usePlayer from "@/hooks/usePlayer";
+import Link from "next/link";
 
 type Props = {
   className?: string;
@@ -72,6 +73,14 @@ const Header = ({ className }: Props) => {
           >
             <BiSearch size={20} className="text-black" />
           </button>
+        </div>
+        <div>
+          <Link
+            className="text-2xl text-black p-2 font-bold transition hover:text-white"
+            href="/library"
+          >
+            Library
+          </Link>
         </div>
         <div className="flex justify-between items-center gap-x-4">
           {user ? (

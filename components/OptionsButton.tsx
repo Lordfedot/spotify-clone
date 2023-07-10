@@ -18,6 +18,11 @@ const OptionsButton = ({ songId }: Props) => {
     e.stopPropagation();
   };
 
+  const handleAddToPlaylist = () => {
+    onOpen();
+    setId(songId);
+    setIsDropdown(false);
+  };
   const handleClickOutside = (event: MouseEvent) => {
     if (
       dropdownRef.current &&
@@ -45,14 +50,7 @@ const OptionsButton = ({ songId }: Props) => {
       </button>
       {isDropdown && (
         <ul className="absolute top-[30px] -left-[142px] bg-neutral-800 px-2 py-5 w-[200px] z-50 flex flex-col gap-2">
-          <li
-            onClick={() => {
-              onOpen();
-              setId(songId);
-              setIsDropdown(false);
-            }}
-            className="hover:bg-neutral-700"
-          >
+          <li onClick={handleAddToPlaylist} className="hover:bg-neutral-700">
             <p>Add to playlist +</p>
           </li>
           <li className="hover:bg-neutral-700">
