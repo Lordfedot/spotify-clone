@@ -27,6 +27,7 @@ const SongItem = ({ data, onClick }: Props) => {
           src={imagePath || "/public/images/liked.png"}
           className="object-cover "
         />
+        <div className="w-full h-full absolute transition inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-b from-[#00000099] from-0% via-[#00000040] via-25% to-[#00000000] to-100%"></div>
       </div>
       <div className="flex flex-col items-start w-full pt-4 gap-y-2">
         <p className="font-semibold truncate w-full">{data.title}</p>

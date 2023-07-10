@@ -16,7 +16,6 @@ type Props = {
 };
 
 const PlayerDropdown = ({ song, activeDropdown }: Props) => {
-  const [songsToRender, setSongsToRender] = useState();
   const { songs } = usePlayer();
   const imageUrl = useLoadImage(song);
   const onPlay = useOnPlay(songs!);
