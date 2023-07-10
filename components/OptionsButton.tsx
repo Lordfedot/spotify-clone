@@ -1,9 +1,16 @@
-import usePlaylistsModal from "@/hooks/usePlaylistsModal";
 import { MouseEventHandler, useEffect, useRef, useState } from "react";
 import { SlOptionsVertical } from "react-icons/sl";
 
-const OptionsButton = () => {
+import useIdForPlaylist from "@/hooks/useIdForPlaylist";
+import usePlaylistsModal from "@/hooks/usePlaylistsModal";
+
+type Props = {
+  songId: string;
+};
+
+const OptionsButton = ({ songId }: Props) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { setId } = useIdForPlaylist();
   const [isDropdown, setIsDropdown] = useState(false);
   const { onOpen } = usePlaylistsModal();
 
@@ -40,7 +47,9 @@ const OptionsButton = () => {
         <ul className="absolute top-[30px] -left-[142px] bg-neutral-800 px-2 py-5 w-[200px] z-50 flex flex-col gap-2">
           <li
             onClick={() => {
-              onOpen(); setIsDropdown(false);
+              onOpen();
+              setId(songId);
+              setIsDropdown(false);
             }}
             className="hover:bg-neutral-700"
           >

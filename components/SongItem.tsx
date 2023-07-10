@@ -39,7 +39,7 @@ const SongItem = ({ data, onClick }: Props) => {
         <PlayButton songId={data.id} />
       </div>
       <div className="absolute top-5 right-5">
-        <OptionsButton />
+        <OptionsButton songId = {data.id}/>
       </div>
     </li>
   );
