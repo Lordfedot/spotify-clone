@@ -2,7 +2,7 @@ import Header from "@/components/Header";
 
 import LibraryContent from "./components/LibraryContent";
 import getSongsByUserId from "@/actions/GetSongsByUserId";
-import getPlaylists from "@/actions/getPlaylists";
+import getPlaylists from "@/actions/getPlaylistsByUserId";
 
 const Library = async () => {
   const songs = await getSongsByUserId();

@@ -76,10 +76,10 @@ const Header = ({ className }: Props) => {
         </div>
         <div>
           <Link
-            className="text-2xl text-black p-2 font-bold transition hover:text-white"
+            className="text-2xl text-white p-2 font-bold transition hover:text-green-500"
             href="/library"
           >
-            Library
+            My library
           </Link>
         </div>
         <div className="flex justify-between items-center gap-x-4">

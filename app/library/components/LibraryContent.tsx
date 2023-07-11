@@ -6,12 +6,14 @@ import useOnPlay from "@/hooks/useOnPlay";
 import { Playlist, Song } from "@/types";
 import img from "@/public/images/liked.png";
 import PlayButton from "@/components/PlayButton";
+import { useRouter } from "next/navigation";
 type Props = {
   songs: Song[];
   playlists: Playlist[];
 };
 
 const LibraryContent = ({ songs, playlists }: Props) => {
+  const route = useRouter();
   const onPlay = useOnPlay(songs);
   return (
     <div className="px-6">
@@ -19,6 +21,7 @@ const LibraryContent = ({ songs, playlists }: Props) => {
         <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8 gap-4 mt-4">
           {playlists.map((playlist) => (
             <li
+              onClick={() => route.push(`/playlist/${playlist.id}`)}
               key={playlist.id}
               className="flex relative group flex-col items-center justify-center rounded-md gap-x-4 bg-neutral-400/5 cursor-pointer hover:bg-neutral-400/10 transition p-3"
             >
