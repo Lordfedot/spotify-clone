@@ -27,7 +27,7 @@ const Sidebar = ({ children,songs }: Props) => {
       {
         icon: HiHome,
         label: "Home",
-        active: pathname !== "/search",
+        active: pathname === "/",
         href: "/",
       },
       {

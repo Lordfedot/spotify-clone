@@ -1,12 +1,12 @@
 "use client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import SongItem from "@/components/SongItem";
 import useOnPlay from "@/hooks/useOnPlay";
 import { Playlist, Song } from "@/types";
 import img from "@/public/images/liked.png";
-import PlayButton from "@/components/PlayButton";
-import { useRouter } from "next/navigation";
+
 type Props = {
   songs: Song[];
   playlists: Playlist[];
@@ -15,6 +15,7 @@ type Props = {
 const LibraryContent = ({ songs, playlists }: Props) => {
   const route = useRouter();
   const onPlay = useOnPlay(songs);
+
   return (
     <div className="px-6">
       <div className="mt-2 mb-7 px-6">
@@ -40,7 +41,7 @@ const LibraryContent = ({ songs, playlists }: Props) => {
                   {playlist.title}
                 </p>
                 <p className="text-neutral-400 text-sm pb-4 w-full  truncate">
-                  {} songs
+                  Playlist
                 </p>
               </div>
             </li>

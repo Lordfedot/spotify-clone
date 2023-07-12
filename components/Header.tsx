@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
@@ -23,6 +23,7 @@ const Header = ({ className }: Props) => {
   const router = useRouter();
   const player = usePlayer();
   const { onOpen } = useAuthModal();
+  const pathname = usePathname();
 
   const supabaseClient = useSupabaseClient();
   const { user } = useUser();
@@ -39,7 +40,7 @@ const Header = ({ className }: Props) => {
       toast.success("Logged out!");
     }
   };
-
+  const active = pathname === "/library";
   return (
     <div
       className={twMerge(
@@ -85,7 +86,11 @@ const Header = ({ className }: Props) => {
         </div>
 
         <Link
-          className="text-2xl hidden md:inline text-white p-2 font-bold transition hover:text-green-500"
+          className={twMerge(
+            `text-2xl hidden md:inline relative text-white p-2 font-bold transition hover:text-green-500`,
+            active &&
+              "text-green-500 before:content-[''] before:absolute before:bottom-1 before:left-0 before:w-full before:h-[2px] before:bg-green-500"
+          )}
           href="/library"
         >
           My library

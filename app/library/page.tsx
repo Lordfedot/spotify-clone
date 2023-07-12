@@ -8,7 +8,7 @@ const Library = async () => {
   const songs = await getSongsByUserId();
   const playlists = await getPlaylists()
   return (
-    <div className="bg-neutral-900 rounded-lg h-full w-full overflow-hidden overflow-y-hidden">
+    <div className="bg-neutral-900 rounded-lg h-full w-full overflow-hidden overflow-y-auto">
       <Header />
       <div className="px-6">
         <div className="mb-2 flex flex-col gap-y-6">
