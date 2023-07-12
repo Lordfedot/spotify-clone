@@ -2,7 +2,7 @@
 
 import { useSessionContext } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { toast } from "react-hot-toast";
 
@@ -43,11 +43,11 @@ const LikeButton = ({ songId }: Props) => {
 
   const Icon = isLiked ? AiFillHeart : AiOutlineHeart;
 
-  const handleLike = async () => {
+  const handleLike: MouseEventHandler<HTMLButtonElement> = async (e) => {
     if (!user) {
       return authModal.onOpen();
     }
-
+    e.stopPropagation();
     if (isLiked) {
       const { error } = await supabaseClient
         .from("liked_songs")

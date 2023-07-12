@@ -2,7 +2,7 @@ import Image from "next/image";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useSessionContext } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/navigation";
-import { MouseEventHandler, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import usePlaylistsModal from "@/hooks/usePlaylistsModal";
 import img from "@/public/images/liked.png";
@@ -34,13 +34,25 @@ const PlaylistsModal = () => {
     songId: string,
     playlistId: string
   ) => {
+    const { data } = await supabaseClient
+      .from("playlisted_songs")
+      .select("*, songs(*)")
+      .eq("user_id", user?.id)
+      .eq("playlist_id", playlistId);
+    if (data) {
+      const checkSong = data.find((item) => item.songs.id === songId);
+      if (checkSong) {
+        return toast.error("This song is already in this playlist");
+      }
+    }
+
     const { error } = await supabaseClient
       .from("playlisted_songs")
       .insert({ user_id: user?.id, playlist_id: playlistId, song_id: songId });
     if (error) {
-      toast.error(error.message);
+      return toast.error(error.message);
     } else {
-      toast.success("Added to playlist! ♥");
+      return toast.success("Added to playlist! ♥");
     }
   };
 
@@ -48,7 +60,6 @@ const PlaylistsModal = () => {
     if (!user?.id) {
       return;
     }
-
     const fetchPlaylists = async () => {
       const { data, error } = await supabaseClient
         .from("playlists")
@@ -77,7 +88,7 @@ const PlaylistsModal = () => {
           }}
           className="flex items-center overflow-hidden justify-between gap-x-3 cursor-pointer hover:bg-neutral-800/50 w-full p-2 rounded-md"
         >
-          <div className="flex items-center  gap-x-3  w-[calc(100%-28px)] overflow-hidden">
+          <div className="flex items-center  gap-x-3 overflow-hidden">
             <div className="relative rounded-md min-h-[48px] min-w-[48px] overflow-hidden">
               <Image
                 sizes="100%"
@@ -102,7 +113,7 @@ const PlaylistsModal = () => {
               onClick={() =>
                 handleAddSongToPlaylist(idForPlaylist!, playlist.id)
               }
-              className="flex items-center overflow-hidden justify-between gap-x-3 cursor-pointer hover:bg-neutral-800/50 w-full p-2 rounded-md"
+              className="flex items-center overflow-hidden justify-between gap-x-3 cursor-pointer opacity-100 hover:opacity-80 w-full p-2 rounded-md"
               key={playlist.id}
             >
               <div className="flex items-center  gap-x-3  w-[calc(100%-28px)] overflow-hidden">
@@ -130,7 +141,7 @@ const PlaylistsModal = () => {
 
         <Button
           onClick={() => AddPlaylistModal.onOpen()}
-          className="fixed bottom-5 right-5 w-[150px] flex items-center justify-between gap-2 text-sm"
+          className="sticky bottom-1 ml-auto right-1 w-[130px] flex items-center justify-between text-sm"
         >
           <AiOutlinePlus size={16} />
           New playlist

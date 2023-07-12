@@ -56,11 +56,7 @@ const PlayerDropdown = ({ song, activeDropdown }: Props) => {
                 onClick={(id: string) => onPlay(id)}
                 key={song.id}
                 data={song}
-              >
-                <div className="absolute left-2 -top-1">
-                  <PlayButton songId={song.id} />
-                </div>
-              </MediaItem>
+              />
             </li>
           ))}
         </ul>

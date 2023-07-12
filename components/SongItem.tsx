@@ -6,6 +6,7 @@ import { Song } from "@/types";
 
 import PlayButton from "./PlayButton";
 import OptionsButton from "./OptionsButton";
+import { useUser } from "@/hooks/useUser";
 
 type Props = {
   data: Song;
@@ -14,6 +15,7 @@ type Props = {
 
 const SongItem = ({ data, onClick }: Props) => {
   const imagePath = useLoadImage(data);
+  const { user } = useUser();
   return (
     <li
       onClick={() => onClick(data.id)}
@@ -35,12 +37,16 @@ const SongItem = ({ data, onClick }: Props) => {
           By {data.author}
         </p>
       </div>
-      <div className="absolute bottom-31 right-5">
-        <PlayButton songId={data.id} />
-      </div>
-      <div className="absolute top-5 right-5">
-        <OptionsButton songId = {data.id}/>
-      </div>
+      {user && (
+        <>
+          <div className="absolute bottom-31 right-5">
+            <PlayButton songId={data.id} />
+          </div>
+          <div className="absolute top-5 right-5">
+            <OptionsButton songId={data.id} />
+          </div>
+        </>
+      )}
     </li>
   );
 };

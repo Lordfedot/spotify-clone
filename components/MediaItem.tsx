@@ -7,21 +7,28 @@ import useLoadImage from "@/hooks/useLoadImage";
 import { Song } from "@/types";
 import usePlayer from "@/hooks/usePlayer";
 import { convertTime } from "@/helpers/convertTime";
+import OptionsButton from "./OptionsButton";
+import LikeButton from "./LikeButton";
+import PlayButton from "./PlayButton";
 
 type Props = {
   data: Song;
   onClick?: Function;
   currentTime?: number;
-  children?: ReactNode;
   className?: string;
+  like?: boolean;
+  options?: boolean;
+  play?: boolean;
 };
 
 const MediaItem = ({
   data,
   onClick,
   currentTime,
-  children,
+  like,
   className,
+  options,
+  play,
 }: Props) => {
   const { activeId } = usePlayer();
   const imageUrl = useLoadImage(data);
@@ -37,8 +44,10 @@ const MediaItem = ({
     <div
       onClick={handleClick}
       className={twMerge(
-        `flex items-center overflow-hidden justify-between gap-x-3 cursor-pointer hover:bg-neutral-800/50 w-full p-2 rounded-md`,
-        currentSong ? className : "border-b-[1px] border-neutral-400 "
+        `flex items-center relative group minw-[250px] justify-between gap-x-3 cursor-pointer hover:bg-neutral-800/50 w-full p-2 rounded-t-xl`,
+        currentSong
+          ? className
+          : "border-b-[1px] border-neutral-400 last:border-transparent"
       )}
     >
       <div className="flex items-center  gap-x-3  w-[calc(100%-28px)] overflow-hidden">
@@ -58,7 +67,8 @@ const MediaItem = ({
           </p>
         </div>
       </div>
-      <div className="justify-self-end">
+      <div className="flex gap-2 items-center">
+        {options && <OptionsButton songId={data.id} />}
         {currentTime ? (
           <p className="text-neutral-400 text-sm truncate hidden md:block">
             {convertedTime} - {data.duration}
@@ -68,8 +78,13 @@ const MediaItem = ({
             {data.duration}
           </p>
         )}
+        {like && <LikeButton songId={data.id} />}
       </div>
-      {children}
+      {play && (
+        <div className="absolute left-2 -top-1">
+          <PlayButton songId={data.id} />
+        </div>
+      )}
     </div>
   );
 };

@@ -37,6 +37,7 @@ const AddPlaylistModal = () => {
       if (!user) {
         return;
       }
+      
       const { error: supabaseError } = await supabaseClient
         .from("playlists")
         .insert({
@@ -52,6 +53,7 @@ const AddPlaylistModal = () => {
       setIsLoading(false);
       toast.success("Playlist created! :)");
       reset();
+      onClose()
     } catch (error) {
       toast.error("Something went wrong!!");
     }

@@ -26,7 +26,7 @@ const Player = () => {
     <>
       <div
         className={twMerge(
-          `fixed bottom-0  w-full py-2 h-[80px] px-4 z-50`,
+          `fixed bottom-0  w-full py-2 h-[80px] px-4 z-10`,
           activeDropdown ? "bg-neutral-900" : "bg-black"
         )}
       >
