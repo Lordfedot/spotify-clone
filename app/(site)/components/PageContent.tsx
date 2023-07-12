@@ -1,16 +1,19 @@
 "use client";
+import Glider from "react-glider";
+import "../../globals.css";
 
 import ListItem from "@/components/ListItem";
 import SongItem from "@/components/SongItem";
 import useOnPlay from "@/hooks/useOnPlay";
 import { useUser } from "@/hooks/useUser";
-import { Song } from "@/types";
+import { Playlist, Song } from "@/types";
 
 type Props = {
   songs: Song[];
+  playlists: Playlist[];
 };
 
-const PageContent = ({ songs }: Props) => {
+const PageContent = ({ songs, playlists }: Props) => {
   const onPlay = useOnPlay(songs);
   const { user } = useUser();
   if (songs.length === 0) {
@@ -18,11 +21,39 @@ const PageContent = ({ songs }: Props) => {
   }
   return (
     <div className="px-6">
-      <h1 className="text-white text-3xl font-semibold"> Welcome back</h1>
+      <h1 className="text-white text-3xl font-semibold mb-4"> Welcome back</h1>
       {user && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3 mt-4">
+        <Glider
+          hasDots
+          draggable
+          hasArrows
+          slidesToShow={1}
+          slidesToScroll={1}
+          responsive={[
+            {
+              breakpoint: 424,
+              settings: {
+                slidesToShow: 2,
+              },
+            },
+            {
+              breakpoint: 1024,
+              settings: {
+                slidesToShow: 3,
+              },
+            },
+          ]}
+        >
           <ListItem href="liked" name="Liked Songs" image="/images/liked.png" />
-        </div>
+          {playlists.map(({ id, title }) => (
+            <ListItem
+              image="/images/liked.png"
+              name={title}
+              key={id}
+              href={`playlist/${id}`}
+            />
+          ))}
+        </Glider>
       )}
       <div className="mt-2 mb-7">
         <div className="flex justify-between items-center">

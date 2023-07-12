@@ -6,13 +6,15 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { HiHome } from "react-icons/hi";
 import { BiSearch } from "react-icons/bi";
 import { FaUserAlt } from "react-icons/fa";
+import { IoLibrarySharp } from "react-icons/io5";
 import { toast } from "react-hot-toast";
+import Link from "next/link";
 
-import Button from "./Button";
 import useAuthModal from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
 import usePlayer from "@/hooks/usePlayer";
-import Link from "next/link";
+
+import Button from "./Button";
 
 type Props = {
   className?: string;
@@ -45,7 +47,7 @@ const Header = ({ className }: Props) => {
         className
       )}
     >
-      <div className="w-full flex items-center justify-between ">
+      <div className="w-full flex items-center gap-x-2 justify-between ">
         <div className="hidden md:flex gap-x-2 items-center">
           <button
             onClick={() => router.back()}
@@ -60,7 +62,8 @@ const Header = ({ className }: Props) => {
             <RxCaretRight className="text-white" size={35} />
           </button>
         </div>
-        <div className="flex md:hidden gap-x-2 items-center">
+
+        <div className="flex md:hidden gap-x-1 items-center">
           <button
             onClick={() => router.push("/")}
             className="rounded-full p-2 bg-white flex items-center justify-center hover:opacity-75 transition"
@@ -73,46 +76,51 @@ const Header = ({ className }: Props) => {
           >
             <BiSearch size={20} className="text-black" />
           </button>
-        </div>
-        <div>
-          <Link
-            className="text-2xl text-white p-2 font-bold transition hover:text-green-500"
-            href="/library"
+          <button
+            onClick={() => router.push("/library")}
+            className="rounded-full p-2 bg-white flex items-center justify-center hover:opacity-75 transition"
           >
-            My library
-          </Link>
+            <IoLibrarySharp size={20} className="text-black" />
+          </button>
         </div>
-        <div className="flex justify-between items-center gap-x-4">
-          {user ? (
-            <div className="flex gap-x-4 items-center">
-              <Button onClick={handleLogout} className="bg-white px-6 py-2">
-                Logout
-              </Button>
+
+        <Link
+          className="text-2xl hidden md:inline text-white p-2 font-bold transition hover:text-green-500"
+          href="/library"
+        >
+          My library
+        </Link>
+
+        {user ? (
+          <div className="flex md:gap-x-4 gap-x-1 items-center">
+            <Button onClick={handleLogout} className="bg-white px-6 py-2">
+              Logout
+            </Button>
+            <Button
+              onClick={() => router.push("/account")}
+              className="bg-white"
+            >
+              <FaUserAlt />
+            </Button>
+          </div>
+        ) : (
+          <div className="flex gap-x-1 items-center flex-col 360:flex-row">
+            <div>
               <Button
-                onClick={() => router.push("/account")}
-                className="bg-white"
+                onClick={onOpen}
+                className="bg-transparent text-neutral-300 font-medium"
               >
-                <FaUserAlt />
+                Sign up
               </Button>
             </div>
-          ) : (
-            <>
-              <div>
-                <Button
-                  onClick={onOpen}
-                  className="bg-transparent text-neutral-300 font-medium"
-                >
-                  Sign up
-                </Button>
-              </div>
-              <div>
-                <Button onClick={onOpen} className="bg-white px-6 py-2">
-                  Log in
-                </Button>
-              </div>
-            </>
-          )}
-        </div>
+
+            <div>
+              <Button onClick={onOpen} className="bg-white px-6 py-2">
+                Log in
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
