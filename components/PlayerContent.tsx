@@ -166,7 +166,6 @@ const PlayerContent = ({
 
       <div className="flex w-full justify-start items-center gap-2 overflow-hidden">
         <MediaItem
-          options
           like
           onClick={toggleDropdown}
           currentTime={currentTime}

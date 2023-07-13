@@ -74,7 +74,6 @@
   outline: none;
   background: none;
   padding: 0;
-  z-index: 2;
   font-size: 40px;
   text-decoration: none;
   left: -23px;
@@ -102,6 +101,7 @@
   opacity: 0.25;
   color: #666;
   cursor: default;
+  
 }
 .glider-slide {
   min-width: 150px;
