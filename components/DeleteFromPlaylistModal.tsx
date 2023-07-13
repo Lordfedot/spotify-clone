@@ -40,6 +40,7 @@ const DeleteFromPlaylistModal = () => {
     if (error) {
       return toast.error(error.message);
     } else {
+      router.refresh();
       return toast.success("Removed from playlist");
     }
   };
@@ -66,7 +67,6 @@ const DeleteFromPlaylistModal = () => {
 
         if (!playlistError && playlistData) {
           setPlaylists(playlistData);
-          router.refresh();
         }
       }
     };
