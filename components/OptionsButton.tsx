@@ -3,6 +3,7 @@ import { SlOptionsVertical } from "react-icons/sl";
 
 import useIdForPlaylist from "@/hooks/useIdForPlaylist";
 import usePlaylistsModal from "@/hooks/usePlaylistsModal";
+import useDeleteFromPlaylistModal from "@/hooks/useDeleteFromPlaylistModal";
 
 type Props = {
   songId: string;
@@ -12,20 +13,23 @@ const OptionsButton = ({ songId }: Props) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { setId } = useIdForPlaylist();
   const [isDropdown, setIsDropdown] = useState(false);
-  const { onOpen } = usePlaylistsModal();
+  const playlistsModal = usePlaylistsModal();
+  const deleteModal = useDeleteFromPlaylistModal();
 
   const stopPropagation: MouseEventHandler<HTMLDivElement> = (e) => {
     e.stopPropagation();
   };
 
   const handleAddToPlaylist = () => {
-    onOpen();
+    playlistsModal.onOpen();
     setId(songId);
     setIsDropdown(false);
   };
   const handleDeleteFromPlaylist = () => {
-    
-  }
+    deleteModal.onOpen();
+    setId(songId);
+    setIsDropdown(false);
+  };
   const handleClickOutside = (event: MouseEvent) => {
     if (
       dropdownRef.current &&
@@ -59,7 +63,10 @@ const OptionsButton = ({ songId }: Props) => {
           >
             <p>Add to playlist +</p>
           </li>
-          <li className="hover:bg-neutral-700 rounded-sm px-2">
+          <li
+            onClick={handleDeleteFromPlaylist}
+            className="hover:bg-neutral-700 rounded-sm px-2"
+          >
             <p>Delete from playlist</p>
           </li>
         </ul>
