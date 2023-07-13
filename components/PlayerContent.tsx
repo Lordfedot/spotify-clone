@@ -166,6 +166,8 @@ const PlayerContent = ({
 
       <div className="flex w-full justify-start items-center gap-2 overflow-hidden">
         <MediaItem
+          options
+          like
           onClick={toggleDropdown}
           currentTime={currentTime}
           data={song}
@@ -178,7 +180,6 @@ const PlayerContent = ({
             )}
           />
         </MediaItem>
-        <LikeButton songId={song.id} />
       </div>
 
       <div className="hidden items-center md:flex w-full justify-end">

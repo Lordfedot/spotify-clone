@@ -50,14 +50,15 @@ const PlayerDropdown = ({ song, activeDropdown }: Props) => {
         </div>
         <ul className="overflow-y-auto h-[calc(100%-40px)] flex flex-col gap-y-2">
           {songs?.map((song) => (
-            <li key={song.id} className="group relative ">
-              <MediaItem
-                className={"bg-neutral-800/50 border-b-[1px] border-green-500"}
-                onClick={(id: string) => onPlay(id)}
-                key={song.id}
-                data={song}
-              />
-            </li>
+            <MediaItem
+              options
+              like
+              play
+              key={song.id}
+              className={"bg-neutral-800/50 border-b-[1px] border-green-500"}
+              onClick={(id: string) => onPlay(id)}
+              data={song}
+            />
           ))}
         </ul>
       </div>

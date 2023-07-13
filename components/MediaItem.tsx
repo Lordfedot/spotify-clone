@@ -1,15 +1,17 @@
 "use client";
 import Image from "next/image";
-import { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
+import { IoIosArrowUp } from "react-icons/io";
 
 import useLoadImage from "@/hooks/useLoadImage";
 import { Song } from "@/types";
 import usePlayer from "@/hooks/usePlayer";
 import { convertTime } from "@/helpers/convertTime";
+
 import OptionsButton from "./OptionsButton";
 import LikeButton from "./LikeButton";
 import PlayButton from "./PlayButton";
+import { ReactNode } from "react";
 
 type Props = {
   data: Song;
@@ -19,6 +21,7 @@ type Props = {
   like?: boolean;
   options?: boolean;
   play?: boolean;
+  children?: ReactNode;
 };
 
 const MediaItem = ({
@@ -26,9 +29,9 @@ const MediaItem = ({
   onClick,
   currentTime,
   like,
-  className,
   options,
   play,
+  children,
 }: Props) => {
   const { activeId } = usePlayer();
   const imageUrl = useLoadImage(data);
@@ -41,13 +44,11 @@ const MediaItem = ({
   const convertedTime = convertTime(Number(currentTime));
   const currentSong = activeId === data.id;
   return (
-    <div
+    <li
       onClick={handleClick}
       className={twMerge(
-        `flex items-center relative group minw-[250px] justify-between gap-x-3 cursor-pointer hover:bg-neutral-800/50 w-full p-2 rounded-t-xl`,
-        currentSong
-          ? className
-          : "border-b-[1px] border-neutral-400 last:border-transparent"
+        `flex items-center relative group minw-[250px] justify-between gap-x-3 cursor-pointer hover:bg-neutral-800/50 w-full p-2 rounded-md before:content-[''] before:absolute before:-bottom-1 before:left-0 before:w-full before:h-[1px] last:before:h-0`,
+        currentSong ? "before:bg-green-500" : "before:bg-neutral-400"
       )}
     >
       <div className="flex items-center  gap-x-3  w-[calc(100%-28px)] overflow-hidden">
@@ -79,13 +80,14 @@ const MediaItem = ({
           </p>
         )}
         {like && <LikeButton songId={data.id} />}
+        {children}
       </div>
       {play && (
         <div className="absolute left-2 -top-1">
           <PlayButton songId={data.id} />
         </div>
       )}
-    </div>
+    </li>
   );
 };
 

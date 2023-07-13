@@ -8,6 +8,7 @@ import SubscribeModal from "@/components/SubscribeModal";
 import PlaylistsModal from "@/components/PlaylistsModal";
 import { ProductWithPrice } from "@/types";
 import AddPlaylistModal from "@/components/AddPlaylistModal";
+import EditPlaylistModal from "@/components/EditPlaylistModal";
 
 type Props = {
   products: ProductWithPrice[];
@@ -24,6 +25,7 @@ const ModalProvider = ({ products }: Props) => {
   }
   return (
     <>
+      <EditPlaylistModal />
       <AddPlaylistModal />
       <SubscribeModal products={products} />
       <AuthModal />

@@ -17,7 +17,7 @@ const PlaylistPage = async ({ params: { id } }: Props) => {
     return null;
   }
   return (
-    <div className="bg-neutral-900 rounded-lg h-full w-full overflow-hidden overflow-y-hidden">
+    <div className="bg-neutral-900 rounded-lg h-full w-full overflow-hidden overflow-y-auto">
       <Header />
       <div className="px-6">
         <PlaylistContent playlist={playlist} songs={playlistSongs} />

@@ -23,6 +23,9 @@ const OptionsButton = ({ songId }: Props) => {
     setId(songId);
     setIsDropdown(false);
   };
+  const handleDeleteFromPlaylist = () => {
+    
+  }
   const handleClickOutside = (event: MouseEvent) => {
     if (
       dropdownRef.current &&
