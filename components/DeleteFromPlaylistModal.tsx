@@ -38,10 +38,10 @@ const DeleteFromPlaylistModal = () => {
       .eq("song_id", songId);
 
     if (error) {
-      return toast.error(error.message);
+      toast.error(error.message);
     } else {
-      router.refresh();
-      return toast.success("Removed from playlist");
+      toast.success("Removed from playlist");
+      onClose();
     }
   };
 
@@ -70,8 +70,10 @@ const DeleteFromPlaylistModal = () => {
         }
       }
     };
-    fetchPlaylists();
-  }, [idForPlaylist, router, supabaseClient, user?.id]);
+    if (isOpen) {
+      fetchPlaylists();
+    }
+  }, [idForPlaylist, supabaseClient, user?.id, isOpen]);
 
   return (
     <Modal

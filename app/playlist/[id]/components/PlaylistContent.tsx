@@ -10,6 +10,8 @@ import useOnPlay from "@/hooks/useOnPlay";
 import { convertTime } from "@/helpers/convertTime";
 import Button from "@/components/Button";
 import useEditPlaylistModal from "@/hooks/useEditPlaylistModal";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 type Props = {
   songs: Song[];
@@ -18,11 +20,15 @@ type Props = {
 
 const PlaylistContent = ({ songs, playlist }: Props) => {
   const onPlay = useOnPlay(songs);
-  const { user } = useUser();
-  const {
-    onOpen,
-    setPlaylist,
-  } = useEditPlaylistModal();
+  const router = useRouter();
+  const { user, isLoading } = useUser();
+  const { onOpen, setPlaylist } = useEditPlaylistModal();
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.replace("/");
+    }
+  }, [isLoading, router, user]);
 
   const totalDuration = songs.reduce((total, song) => {
     const [minutes, seconds] = song.duration.split(":").map(Number);

@@ -71,7 +71,6 @@ const LikeButton = ({ songId }: Props) => {
         toast.success("Liked! ♥");
       }
     }
-
     router.refresh();
   };
   return (

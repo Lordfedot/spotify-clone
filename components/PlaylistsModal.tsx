@@ -50,9 +50,10 @@ const PlaylistsModal = () => {
       .from("playlisted_songs")
       .insert({ user_id: user?.id, playlist_id: playlistId, song_id: songId });
     if (error) {
-      return toast.error(error.message);
+      toast.error(error.message);
     } else {
-      return toast.success("Added to playlist! ♥");
+      toast.success("Added to playlist! ♥");
+      router.refresh()
     }
   };
 
