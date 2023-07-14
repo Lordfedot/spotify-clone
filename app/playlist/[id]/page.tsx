@@ -13,9 +13,11 @@ type Props = {
 const PlaylistPage = async ({ params: { id } }: Props) => {
   const playlistSongs = await getPlaylistSongs(id);
   const playlist = await getPlaylistById(id);
+
   if (!playlist || !playlistSongs) {
     return null;
   }
+  
   return (
     <div className="bg-neutral-900 rounded-lg h-full w-full overflow-hidden overflow-y-auto">
       <Header />

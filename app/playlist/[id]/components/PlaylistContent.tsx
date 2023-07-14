@@ -1,6 +1,10 @@
 "use client";
 import Image from "next/image";
+import { useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { MdOutlineModeEditOutline } from "react-icons/md";
+import toast from "react-hot-toast";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 import { Playlist, Song } from "@/types";
 import img from "@/public/images/liked.png";
@@ -10,8 +14,6 @@ import useOnPlay from "@/hooks/useOnPlay";
 import { convertTime } from "@/helpers/convertTime";
 import Button from "@/components/Button";
 import useEditPlaylistModal from "@/hooks/useEditPlaylistModal";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 
 type Props = {
   songs: Song[];
@@ -23,6 +25,31 @@ const PlaylistContent = ({ songs, playlist }: Props) => {
   const router = useRouter();
   const { user, isLoading } = useUser();
   const { onOpen, setPlaylist } = useEditPlaylistModal();
+  const params = useParams();
+  const supabaseClient = useSupabaseClient();
+
+  const handleDelete = async () => {
+    try {
+      if (!user) {
+        return;
+      }
+
+      const { error } = await supabaseClient
+        .from("playlists")
+        .delete()
+        .eq("user_id", user.id)
+        .eq("id", params.id);
+
+      if (error) {
+        return toast.error(error.message);
+      }
+      router.replace("/");
+
+      toast.success("Playlist deleted");
+    } catch (error) {
+      toast.error("Something went wrong!!");
+    }
+  };
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -64,16 +91,24 @@ const PlaylistContent = ({ songs, playlist }: Props) => {
           <p className="text-neutral-300 text-sm font-normal truncate">
             {playlist.description}
           </p>
-          <Button
-            onClick={() => {
-              setPlaylist(playlist);
-              onOpen();
-            }}
-            className="w-[100px] p-1 bg-white flex items-center gap-1 justify-center"
-          >
-            <MdOutlineModeEditOutline className="inline" size={16} />
-            Edit
-          </Button>
+          <div className="flex gap-3 flex-col sm:flex-row">
+            <Button
+              onClick={() => {
+                setPlaylist(playlist);
+                onOpen();
+              }}
+              className="w-[100px] p-1 bg-white flex items-center gap-1 justify-center"
+            >
+              <MdOutlineModeEditOutline className="inline" size={16} />
+              Edit
+            </Button>
+            <Button
+              onClick={handleDelete}
+              className="w-[150px] p-1 bg-transparent text-white flex items-center gap-1 justify-center hover:bg-white hover:text-black"
+            >
+              Delete playlist
+            </Button>
+          </div>
         </div>
       </div>
       <ul>
