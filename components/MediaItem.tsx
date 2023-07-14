@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { twMerge } from "tailwind-merge";
-import { IoIosArrowUp } from "react-icons/io";
+import { ReactNode } from "react";
 
 import useLoadImage from "@/hooks/useLoadImage";
 import { Song } from "@/types";
@@ -11,7 +11,7 @@ import { convertTime } from "@/helpers/convertTime";
 import OptionsButton from "./OptionsButton";
 import LikeButton from "./LikeButton";
 import PlayButton from "./PlayButton";
-import { ReactNode } from "react";
+import { useUser } from "@/hooks/useUser";
 
 type Props = {
   data: Song;
@@ -35,6 +35,7 @@ const MediaItem = ({
 }: Props) => {
   const { activeId } = usePlayer();
   const imageUrl = useLoadImage(data);
+  const { user } = useUser();
 
   const handleClick = () => {
     if (onClick) {
@@ -69,7 +70,7 @@ const MediaItem = ({
         </div>
       </div>
       <div className="flex gap-2 items-center">
-        {options && <OptionsButton songId={data.id} />}
+        {options && user && <OptionsButton songId={data.id} />}
         {currentTime ? (
           <p className="text-neutral-400 text-sm truncate hidden md:block">
             {convertedTime} - {data.duration}
