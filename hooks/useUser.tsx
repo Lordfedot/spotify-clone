@@ -3,7 +3,13 @@ import {
   useUser as useSupaUser,
   User,
 } from "@supabase/auth-helpers-react";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 import { Subscription, UserDetails } from "@/types";
 
@@ -35,13 +41,20 @@ export const MyUserContextProvider = (props: Props) => {
   const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
   const [subscription, setSubscription] = useState<Subscription | null>(null);
 
-  const getUserDetails = () => supabase.from("users").select("*").single();
-  const getSubscription = () =>
-    supabase
-      .from("subscriptions")
-      .select("*, prices(*, products(*))")
-      .in("status", ["trialing", "active"])
-      .single();
+  const getUserDetails = useCallback(
+    () => supabase.from("users").select("*").single(),
+    [supabase]
+  );
+
+  const getSubscription = useCallback(
+    () =>
+      supabase
+        .from("subscriptions")
+        .select("*, prices(*, products(*))")
+        .in("status", ["trialing", "active"])
+        .single(),
+    [supabase]
+  );
 
   useEffect(() => {
     if (user && !isLoadingData && !userDetails && !subscription) {
@@ -63,7 +76,15 @@ export const MyUserContextProvider = (props: Props) => {
       setUserDetails(null);
       setSubscription(null);
     }
-  }, [user, isLoadingUser]);
+  }, [
+    user,
+    isLoadingUser,
+    isLoadingData,
+    userDetails,
+    subscription,
+    getUserDetails,
+    getSubscription,
+  ]);
 
   const value = {
     accessToken,
