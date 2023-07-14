@@ -85,16 +85,18 @@ const Header = ({ className }: Props) => {
           </button>
         </div>
 
-        <Link
-          className={twMerge(
-            `text-2xl hidden md:inline relative text-white p-2 font-bold transition hover:text-green-500`,
-            active &&
-              "text-green-500 before:content-[''] before:absolute before:bottom-1 before:left-0 before:w-full before:h-[2px] before:bg-green-500"
-          )}
-          href="/library"
-        >
-          My library
-        </Link>
+        {user && (
+          <Link
+            className={twMerge(
+              `text-2xl hidden md:inline relative text-white p-2 font-bold transition hover:text-green-500`,
+              active &&
+                "text-green-500 before:content-[''] before:absolute before:bottom-1 before:left-0 before:w-full before:h-[2px] before:bg-green-500"
+            )}
+            href="/library"
+          >
+            My library
+          </Link>
+        )}
 
         {user ? (
           <div className="flex md:gap-x-4 gap-x-1 items-center">
