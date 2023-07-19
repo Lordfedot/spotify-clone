@@ -10,9 +10,11 @@ import { useUser } from "@/hooks/useUser";
 import Button from "./Button";
 import Input from "./Input";
 import Modal from "./Modal";
+import usePlaylistsModal from "@/hooks/usePlaylistsModal";
 
 const AddPlaylistModal = () => {
   const { onClose, isOpen } = useAddPlaylistModal();
+  const playlistModal = usePlaylistsModal()
   const supabaseClient = useSupabaseClient();
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useUser();
@@ -54,6 +56,7 @@ const AddPlaylistModal = () => {
       toast.success("Playlist created! :)");
       reset();
       onClose()
+      playlistModal.onClose()
     } catch (error) {
       toast.error("Something went wrong!!");
     }

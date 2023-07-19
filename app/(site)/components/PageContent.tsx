@@ -7,6 +7,9 @@ import SongItem from "@/components/SongItem";
 import useOnPlay from "@/hooks/useOnPlay";
 import { useUser } from "@/hooks/useUser";
 import { Playlist, Song } from "@/types";
+import usePlaylistsModal from "@/hooks/usePlaylistsModal";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 type Props = {
   songs: Song[];
@@ -15,6 +18,7 @@ type Props = {
 
 const PageContent = ({ songs, playlists }: Props) => {
   const onPlay = useOnPlay(songs);
+
   const { user } = useUser();
   if (songs.length === 0) {
     return <p className="mt-4 text-neutral-400">No songs available</p>;
