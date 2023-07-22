@@ -9,11 +9,11 @@ import img from "@/public/images/liked.png";
 import useAddPlaylistModal from "@/hooks/useAddPlaylistModal";
 import { useUser } from "@/hooks/useUser";
 import { Playlist } from "@/types";
+import useIdForPlaylist from "@/hooks/useIdForPlaylist";
 
 import Modal from "./Modal";
 import Button from "./Button";
 import toast from "react-hot-toast";
-import useIdForPlaylist from "@/hooks/useIdForPlaylist";
 
 const PlaylistsModal = () => {
   const AddPlaylistModal = useAddPlaylistModal();
@@ -53,7 +53,7 @@ const PlaylistsModal = () => {
       toast.error(error.message);
     } else {
       toast.success("Added to playlist! ♥");
-      router.refresh()
+      router.refresh();
     }
   };
 
@@ -71,8 +71,10 @@ const PlaylistsModal = () => {
         setPlaylists(data);
       }
     };
-    fetchPlaylists();
-  }, [supabaseClient, user?.id]);
+    if (isOpen) {
+      fetchPlaylists();
+    }
+  }, [isOpen, supabaseClient, user?.id]);
 
   return (
     <Modal

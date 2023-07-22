@@ -41,6 +41,7 @@ const DeleteFromPlaylistModal = () => {
       toast.error(error.message);
     } else {
       toast.success("Removed from playlist");
+      router.refresh()
       onClose();
     }
   };

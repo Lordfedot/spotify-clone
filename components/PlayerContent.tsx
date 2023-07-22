@@ -17,9 +17,9 @@ import { twMerge } from "tailwind-merge";
 import usePlayer from "@/hooks/usePlayer";
 import { Song } from "@/types";
 import { convertTimeToNumber } from "@/helpers/convertTime";
+import { ClipLoader } from "react-spinners";
 
 import MediaItem from "./MediaItem";
-import LikeButton from "./LikeButton";
 import Slider from "./Slider";
 
 type Props = {
@@ -39,13 +39,17 @@ const PlayerContent = ({
     parseFloat(localStorage.getItem("volume")!) || 1
   );
   const [currentTime, setCurrentTime] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { isPlaying, setIsPlaying, ids, setId, activeId, setPlay, setPause } =
     usePlayer();
 
   const [play, { pause, sound }] = useSound(songUrl, {
     volume: volume,
-    onplay: () => setIsPlaying(true),
+    onplay: () => {
+      setIsLoading(false);
+      setIsPlaying(true);
+    },
     onend: () => {
       setIsPlaying(false);
       onPlayNext();
@@ -55,6 +59,8 @@ const PlayerContent = ({
   });
 
   useEffect(() => {
+    setIsLoading(true);
+
     setPause(pause);
     setPlay(play);
   }, [setPause, setPlay, pause, play]);
@@ -125,7 +131,15 @@ const PlayerContent = ({
   };
 
   const maxDuration = convertTimeToNumber(song.duration);
-  const Icon = isPlaying ? BsPauseFill : BsPlayFill;
+  const Icon = () => {
+    if (isLoading) {
+      return <ClipLoader size={30}/>;
+    } else if (isPlaying) {
+      return <BsPauseFill size={30} className="text-black" />;
+    } else {
+      return <BsPlayFill size={30} className="text-black" />;
+    }
+  };
   const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
   return (
     <div className="grid grid-cols-[1fr_4fr] md:grid-cols-[1fr_3fr_1fr] gap-4 h-full">
@@ -141,7 +155,7 @@ const PlayerContent = ({
           onClick={handlePlay}
           className="h-10 w-10 flex items-center justify-center rounded-full bg-white cursor-pointer p-1"
         >
-          <Icon size={30} className="text-black" />
+          <Icon />
         </div>
       </div>
 
@@ -155,7 +169,7 @@ const PlayerContent = ({
           onClick={handlePlay}
           className="flex items-center justify-center h-10 w-10 rounded-full bg-white p-1 cursor-pointer"
         >
-          <Icon size={30} className="text-black" />
+          <Icon />
         </div>
         <AiFillStepForward
           size={30}

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 import useGetSongById from "@/hooks/useGetSongsById";
@@ -19,6 +19,10 @@ const Player = () => {
     setActiveDropdown(!activeDropdown);
   };
 
+  useEffect(() => {
+
+  },[])
+  
   if (!song || !songUrl || !activeId) {
     return null;
   }
