@@ -40,7 +40,7 @@ const AuthModal = () => {
       <Auth
         theme="dark"
         magicLink
-        providers={["github"]}
+        providers={[]}
         supabaseClient={supabaseClient}
         appearance={{
           theme: ThemeSupa,
@@ -49,6 +49,10 @@ const AuthModal = () => {
           },
         }}
       />
+      <div>
+        <p className="text-neutral-600 ">Email: frodosumkin556@gmail.com</p>
+        <p className="text-neutral-600 ">Password: kjhlcfehjy</p>
+      </div>
     </Modal>
   );
 };
